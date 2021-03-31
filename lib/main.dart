@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'DeliMeals',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.brown,
         accentColor: Colors.amber,
 
         fontFamily: 'Raleway',
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       //   return MaterialPageRoute(builder: (c) => MealDeatilScreen());
       // },
 
-      onUnknownRoute: (c){
+      onUnknownRoute: (c) {
         return MaterialPageRoute(builder: (c) => MealDeatilScreen());
       },
     );
