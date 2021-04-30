@@ -1,23 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:recipes_flutter/dummy_data.dart';
+
+import 'package:recipes_flutter/model/meal.dart';
 import 'package:recipes_flutter/widget/meal_item.dart';
 
-class CategoryMealScreen extends StatelessWidget {
+class CategoryMealScreen extends StatefulWidget {
   static const categoryMeal = '/category-meals';
-  // const CategoryMealScreen(this.categoryId, this.title);
-  // final String title;
-  // final categoryId;
+  final List<Meal> availableMeals;
+  CategoryMealScreen(this.availableMeals);
+
+  @override
+  _CategoryMealScreenState createState() => _CategoryMealScreenState();
+}
+
+class _CategoryMealScreenState extends State<CategoryMealScreen> {
+  String categoryTitle;
+  List<Meal> categoryMeal;
+  // bool _loadedInatData = false;
+  @override
+  // void initState() {
+  //   final routeARG =
+  //       ModalRoute.of(context).settings.arguments as Map<String, String>;
+  //   categoryTitle = routeARG['title'];
+  //   final categoryId = routeARG['categoryId'];
+  //   categoryMeal = DUMMY_MEALS
+  //       .where((element) => element.categories.contains(categoryId))
+  //       .toList();
+  //   super.initState();
+  // }
+  @override
+  void didChangeDependencies() {
+    final routeARG =
+        ModalRoute.of(context).settings.arguments as Map<String, String>;
+    categoryTitle = routeARG['title'];
+    final categoryId = routeARG['categoryId'];
+    // categoryMeal = DUMMY_MEALS
+    //     .where((element) => element.categories.contains(categoryId))
+    //     .toList();
+    // 
+    categoryMeal = widget.availableMeals
+        .where((element) => element.categories.contains(categoryId))
+        .toList();
+
+    super.didChangeDependencies();
+  }
+
+  // void _removeId(String mealId) {
+  //   setState(() {
+  //     categoryMeal.removeWhere((element) => element.id == mealId);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final routeARG =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    final categoryTitle = routeARG['title'];
-    final categoryId = routeARG['categoryId'];
-    final categoryMeal = DUMMY_MEALS
-        .where((element) => element.categories.contains(categoryId))
-        .toList();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,6 +74,7 @@ class CategoryMealScreen extends StatelessWidget {
             duration: categoryMeal[index].duration,
             complexity: categoryMeal[index].complexity,
             affordability: categoryMeal[index].affordability,
+            //removeItem: _removeId,
           );
         },
       ),
