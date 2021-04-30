@@ -4,7 +4,9 @@ import 'package:recipes_flutter/dummy_data.dart';
 
 class MealDeatilScreen extends StatelessWidget {
   static const routeName = "/meal-deatil";
-  const MealDeatilScreen({Key key}) : super(key: key);
+  final Function tigleFavorite;
+  final Function isMealFavorite;
+  const MealDeatilScreen(this.tigleFavorite,this.isMealFavorite);
 
   buildTitleSection(String text) {
     return Container(
@@ -38,54 +40,64 @@ class MealDeatilScreen extends StatelessWidget {
     final selectedMeal =
         DUMMY_MEALS.firstWhere((element) => element.id == mealId);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(selectedMeal.title),
-        ),
-        body: SingleChildScrollView(
-                  child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: 150,
-                // child: Image.network(selectedMeal[0].imageUrl),
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      appBar: AppBar(
+        title: Text(selectedMeal.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 150,
+              // child: Image.network(selectedMeal[0].imageUrl),
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
               ),
-              buildTitleSection('ingredients'),
-              buildContainer(
-                ListView.builder(
-                  itemCount: selectedMeal.ingredients.length,
-                  itemBuilder: (_, index) {
-                    return Card(
-                      elevation: 2,
-                      child: Text(selectedMeal.ingredients[index]),
-                    );
-                  },
-                ),
-              ),
-              buildTitleSection('Steps'),
-              buildContainer(ListView.builder(
-                itemCount: selectedMeal.steps.length,
+            ),
+            buildTitleSection('ingredients'),
+            buildContainer(
+              ListView.builder(
+                itemCount: selectedMeal.ingredients.length,
                 itemBuilder: (_, index) {
-                  return Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                         
-                          child: Text('${(index +1)}'),
-                          
-                        ),
-                        title: Text(selectedMeal.steps[index]),
-                      ),
-                      Divider(color: Colors.red[100],)
-                    ],
+                  return Card(
+                    elevation: 2,
+                    child: Text(selectedMeal.ingredients[index]),
                   );
                 },
-              )),
-            ],
-          ),
-        ));
+              ),
+            ),
+            buildTitleSection('Steps'),
+            buildContainer(ListView.builder(
+              itemCount: selectedMeal.steps.length,
+              itemBuilder: (_, index) {
+                return Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        child: Text('${(index + 1)}'),
+                      ),
+                      title: Text(selectedMeal.steps[index]),
+                    ),
+                    Divider(
+                      color: Colors.red[100],
+                    )
+                  ],
+                );
+              },
+            )),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:()=> tigleFavorite(mealId),
+        //  () {
+        //   Navigator.of(context).pop(mealId);
+        // },
+        child: Icon(isMealFavorite(mealId)?Icons.star:Icons.star_border)
+        
+        //Icon(Icons.remove_circle),
+      ),
+    );
   }
 }
